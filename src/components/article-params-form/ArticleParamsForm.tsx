@@ -5,51 +5,111 @@ import { FormEvent, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useClickOutside } from 'src/hooks/use-click-outside';
 import { Button } from 'src/ui/button';
-import { ArticleStateType } from 'src/constants/articleProps';
+import {
+	ArticleStateOption,
+	ArticleStateType,
+	backgroundColors,
+	contentWidthArr,
+	defaultArticleState,
+	fontColors,
+	fontFamilyOptions,
+	fontSizeOptions,
+	OptionType,
+} from 'src/constants/articleProps';
+import { Select } from 'src/ui/select';
+import { RadioGroup } from 'src/ui/radio-group';
+import { Text } from 'src/ui/text';
+import { Separator } from 'src/ui/separator';
 
 type Props = {
 	settings: ArticleStateType;
-	resetForm: () => void;
 	updateSettings: (newSettings: ArticleStateType) => void;
 };
-export const ArticleParamsForm = ({
-	// settings,
-	// updateSettings,
-	resetForm,
-}: Props) => {
+export const ArticleParamsForm = ({ settings, updateSettings }: Props) => {
+	const [newSettings, setNewSettings] = useState(settings);
 	const [isOpen, setIsOpen] = useState(false);
 	const asideRef = useRef<HTMLElement>(null);
 	const arrowRef = useRef<HTMLDivElement>(null);
 
 	useClickOutside({
 		ref: asideRef,
-		handler: () => setIsOpen(false),
+		handler: () => {
+			setIsOpen(false);
+			setNewSettings(settings);
+		},
 		ignoreRef: arrowRef,
 	});
 
+	const handleArrowClick = () => {
+		setIsOpen((pv) => !pv);
+		setNewSettings(settings);
+	};
+
+	const handleFormUpdate = (title: ArticleStateOption, option: OptionType) => {
+		setNewSettings((pv) => ({ ...pv, [title]: option }));
+	};
+
 	const handleFormSubmit = (e: FormEvent) => {
 		e.preventDefault();
-		// apply new settings
-		// setSettings(newSettings);
+
+		updateSettings(newSettings);
+		setIsOpen(false);
 	};
 
 	return (
 		<>
-			<ArrowButton
-				isOpen={isOpen}
-				onClick={() => setIsOpen((pv) => !pv)}
-				ref={arrowRef}
-			/>
+			<ArrowButton isOpen={isOpen} onClick={handleArrowClick} ref={arrowRef} />
 			<aside
 				className={clsx(styles.container, { [styles.container_open]: isOpen })}
 				ref={asideRef}>
 				<form className={styles.form} onSubmit={handleFormSubmit}>
+					<Text as='h2' size={31} weight={800} uppercase>
+						Задайте параметры
+					</Text>
+					<Select
+						selected={newSettings.fontFamilyOption}
+						onChange={(selected) =>
+							handleFormUpdate('fontFamilyOption', selected)
+						}
+						options={fontFamilyOptions}
+						title='шрифт'
+					/>
+					<RadioGroup
+						selected={newSettings.fontSizeOption}
+						onChange={(selected) =>
+							handleFormUpdate('fontSizeOption', selected)
+						}
+						name={newSettings.fontSizeOption.title}
+						title='Размер шрифта'
+						options={fontSizeOptions}
+					/>
+					<Select
+						selected={newSettings.fontColor}
+						onChange={(selected) => handleFormUpdate('fontColor', selected)}
+						options={fontColors}
+						title='Цвет шрифта'
+					/>
+					<Separator />
+					<Select
+						selected={newSettings.backgroundColor}
+						onChange={(selected) =>
+							handleFormUpdate('backgroundColor', selected)
+						}
+						options={backgroundColors}
+						title='Цвет фона'
+					/>
+					<Select
+						selected={newSettings.contentWidth}
+						onChange={(selected) => handleFormUpdate('contentWidth', selected)}
+						options={contentWidthArr}
+						title='Ширина контента'
+					/>
 					<div className={styles.bottomContainer}>
 						<Button
 							title='Сбросить'
 							htmlType='button'
 							type='clear'
-							onClick={resetForm}
+							onClick={() => setNewSettings(defaultArticleState)}
 						/>
 						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>

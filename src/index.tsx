@@ -30,7 +30,6 @@ const App = () => {
 			<ArticleParamsForm
 				settings={settings}
 				updateSettings={(newSettings) => setSettings(newSettings)}
-				resetForm={() => setSettings(defaultArticleState)}
 			/>
 			<Article />
 		</main>
