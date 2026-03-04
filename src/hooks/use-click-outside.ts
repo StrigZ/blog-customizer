@@ -7,12 +7,11 @@ type Props = {
 };
 export function useClickOutside({ ref, handler, ignoreRef }: Props) {
 	useEffect(() => {
-		if (!ref.current) return;
-
 		function clickListener(e: MouseEvent) {
 			if (!e.target) return;
+			if (!(e.target instanceof Node)) return;
 
-			const target = e.target as Node;
+			const target = e.target;
 			if (ignoreRef?.current?.contains(target)) return;
 			if (ref.current?.contains(target)) return;
 
@@ -23,10 +22,10 @@ export function useClickOutside({ ref, handler, ignoreRef }: Props) {
 			handler();
 		}
 
-		document.addEventListener('click', clickListener);
+		document.addEventListener('mousedown', clickListener);
 		document.addEventListener('keydown', keyListener);
 		return () => {
-			document.removeEventListener('click', clickListener);
+			document.removeEventListener('mousedown', clickListener);
 			document.removeEventListener('keydown', keyListener);
 		};
 	}, [ref, handler, ignoreRef]);
