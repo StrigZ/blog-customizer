@@ -4,9 +4,17 @@ type Props = {
 	ref: RefObject<HTMLElement>;
 	handler: () => void;
 	ignoreRef?: RefObject<HTMLElement>;
+	shouldAttachListeners?: boolean;
 };
-export function useClickOutside({ ref, handler, ignoreRef }: Props) {
+export function useClickOutside({
+	ref,
+	handler,
+	ignoreRef,
+	shouldAttachListeners = true,
+}: Props) {
 	useEffect(() => {
+		if (!shouldAttachListeners) return;
+
 		function clickListener(e: MouseEvent) {
 			if (!e.target) return;
 			if (!(e.target instanceof Node)) return;
@@ -28,5 +36,5 @@ export function useClickOutside({ ref, handler, ignoreRef }: Props) {
 			document.removeEventListener('mousedown', clickListener);
 			document.removeEventListener('keydown', keyListener);
 		};
-	}, [ref, handler, ignoreRef]);
+	}, [ref, handler, ignoreRef, shouldAttachListeners]);
 }

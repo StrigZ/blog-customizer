@@ -42,6 +42,7 @@ export const ArticleParamsForm = ({
 			setFormState(articleState);
 		},
 		ignoreRef: arrowRef,
+		shouldAttachListeners: isMenuOpen,
 	});
 
 	const handleArrowClick = () => {
