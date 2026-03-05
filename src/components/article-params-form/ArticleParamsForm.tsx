@@ -25,11 +25,12 @@ type Props = {
 	articleState: ArticleStateType;
 	updateArticleState: (newArticleState: ArticleStateType) => void;
 };
+
 export const ArticleParamsForm = ({
 	articleState,
 	updateArticleState,
 }: Props) => {
-	const [newSettings, setNewSettings] = useState(articleState);
+	const [formState, setFormState] = useState(articleState);
 	const [isOpen, setIsOpen] = useState(false);
 	const asideRef = useRef<HTMLElement>(null);
 	const arrowRef = useRef<HTMLDivElement>(null);
@@ -38,24 +39,24 @@ export const ArticleParamsForm = ({
 		ref: asideRef,
 		handler: () => {
 			setIsOpen(false);
-			setNewSettings(articleState);
+			setFormState(articleState);
 		},
 		ignoreRef: arrowRef,
 	});
 
 	const handleArrowClick = () => {
 		setIsOpen((pv) => !pv);
-		setNewSettings(articleState);
+		setFormState(articleState);
 	};
 
 	const handleFormUpdate = (title: ArticleStateOption, option: OptionType) => {
-		setNewSettings((pv) => ({ ...pv, [title]: option }));
+		setFormState((pv) => ({ ...pv, [title]: option }));
 	};
 
 	const handleFormSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		updateArticleState(newSettings);
+		updateArticleState(formState);
 		setIsOpen(false);
 	};
 
@@ -70,7 +71,7 @@ export const ArticleParamsForm = ({
 						Задайте параметры
 					</Text>
 					<Select
-						selected={newSettings.fontFamilyOption}
+						selected={formState.fontFamilyOption}
 						onChange={(selected) =>
 							handleFormUpdate('fontFamilyOption', selected)
 						}
@@ -78,23 +79,23 @@ export const ArticleParamsForm = ({
 						title='шрифт'
 					/>
 					<RadioGroup
-						selected={newSettings.fontSizeOption}
+						selected={formState.fontSizeOption}
 						onChange={(selected) =>
 							handleFormUpdate('fontSizeOption', selected)
 						}
-						name={newSettings.fontSizeOption.title}
+						name={formState.fontSizeOption.title}
 						title='Размер шрифта'
 						options={fontSizeOptions}
 					/>
 					<Select
-						selected={newSettings.fontColor}
+						selected={formState.fontColor}
 						onChange={(selected) => handleFormUpdate('fontColor', selected)}
 						options={fontColors}
 						title='Цвет шрифта'
 					/>
 					<Separator />
 					<Select
-						selected={newSettings.backgroundColor}
+						selected={formState.backgroundColor}
 						onChange={(selected) =>
 							handleFormUpdate('backgroundColor', selected)
 						}
@@ -102,7 +103,7 @@ export const ArticleParamsForm = ({
 						title='Цвет фона'
 					/>
 					<Select
-						selected={newSettings.contentWidth}
+						selected={formState.contentWidth}
 						onChange={(selected) => handleFormUpdate('contentWidth', selected)}
 						options={contentWidthArr}
 						title='Ширина контента'
@@ -112,7 +113,7 @@ export const ArticleParamsForm = ({
 							title='Сбросить'
 							htmlType='button'
 							type='clear'
-							onClick={() => setNewSettings(defaultArticleState)}
+							onClick={() => setFormState(defaultArticleState)}
 						/>
 						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>
