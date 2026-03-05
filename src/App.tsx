@@ -25,6 +25,7 @@ export const App = () => {
 				updateArticleState={(newArticleState) =>
 					setArticleState(newArticleState)
 				}
+				resetArticleState={() => setArticleState(defaultArticleState)}
 			/>
 			<Article />
 		</main>

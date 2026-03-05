@@ -24,11 +24,13 @@ import { Separator } from 'src/ui/separator';
 type Props = {
 	articleState: ArticleStateType;
 	updateArticleState: (newArticleState: ArticleStateType) => void;
+	resetArticleState: () => void;
 };
 
 export const ArticleParamsForm = ({
 	articleState,
 	updateArticleState,
+	resetArticleState,
 }: Props) => {
 	const [formState, setFormState] = useState(articleState);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,6 +46,11 @@ export const ArticleParamsForm = ({
 		ignoreRef: arrowRef,
 		shouldAttachListeners: isMenuOpen,
 	});
+
+	const handleResetButtonClick = () => {
+		resetArticleState();
+		setFormState(defaultArticleState);
+	};
 
 	const handleArrowClick = () => {
 		setIsMenuOpen((pv) => !pv);
@@ -120,7 +127,7 @@ export const ArticleParamsForm = ({
 							title='Сбросить'
 							htmlType='button'
 							type='clear'
-							onClick={() => setFormState(defaultArticleState)}
+							onClick={handleResetButtonClick}
 						/>
 						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>
