@@ -1,5 +1,3 @@
-import clsx from 'clsx';
-
 import { Article } from './components/article/Article';
 import { ArticleParamsForm } from './components/article-params-form/ArticleParamsForm';
 import { defaultArticleState } from './constants/articleProps';
@@ -12,7 +10,7 @@ export const App = () => {
 
 	return (
 		<main
-			className={clsx(styles.main)}
+			className={styles.main}
 			style={
 				{
 					'--font-family': articleState.fontFamilyOption.value,
