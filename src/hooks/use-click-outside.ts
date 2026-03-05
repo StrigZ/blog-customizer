@@ -15,7 +15,7 @@ export function useClickOutside({
 	useEffect(() => {
 		if (!shouldAttachListeners) return;
 
-		function clickListener(e: MouseEvent) {
+		function handleClick(e: MouseEvent) {
 			if (!e.target) return;
 			if (!(e.target instanceof Node)) return;
 
@@ -25,16 +25,16 @@ export function useClickOutside({
 
 			handler();
 		}
-		function keyListener(e: KeyboardEvent) {
+		function handleKeyDown(e: KeyboardEvent) {
 			if (e.key !== 'Escape') return;
 			handler();
 		}
 
-		document.addEventListener('mousedown', clickListener);
-		document.addEventListener('keydown', keyListener);
+		document.addEventListener('mousedown', handleClick);
+		document.addEventListener('keydown', handleKeyDown);
 		return () => {
-			document.removeEventListener('mousedown', clickListener);
-			document.removeEventListener('keydown', keyListener);
+			document.removeEventListener('mousedown', handleClick);
+			document.removeEventListener('keydown', handleKeyDown);
 		};
 	}, [ref, handler, ignoreRef, shouldAttachListeners]);
 }
