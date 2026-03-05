@@ -31,21 +31,21 @@ export const ArticleParamsForm = ({
 	updateArticleState,
 }: Props) => {
 	const [formState, setFormState] = useState(articleState);
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const asideRef = useRef<HTMLElement>(null);
 	const arrowRef = useRef<HTMLDivElement>(null);
 
 	useClickOutside({
 		ref: asideRef,
 		handler: () => {
-			setIsOpen(false);
+			setIsMenuOpen(false);
 			setFormState(articleState);
 		},
 		ignoreRef: arrowRef,
 	});
 
 	const handleArrowClick = () => {
-		setIsOpen((pv) => !pv);
+		setIsMenuOpen((pv) => !pv);
 		setFormState(articleState);
 	};
 
@@ -57,14 +57,20 @@ export const ArticleParamsForm = ({
 		e.preventDefault();
 
 		updateArticleState(formState);
-		setIsOpen(false);
+		setIsMenuOpen(false);
 	};
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={handleArrowClick} ref={arrowRef} />
+			<ArrowButton
+				isOpen={isMenuOpen}
+				onClick={handleArrowClick}
+				ref={arrowRef}
+			/>
 			<aside
-				className={clsx(styles.container, { [styles.container_open]: isOpen })}
+				className={clsx(styles.container, {
+					[styles.container_open]: isMenuOpen,
+				})}
 				ref={asideRef}>
 				<form className={styles.form} onSubmit={handleFormSubmit}>
 					<Text as='h2' size={31} weight={800} uppercase>
