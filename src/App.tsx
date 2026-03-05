@@ -8,23 +8,25 @@ import styles from './styles/index.module.scss';
 import { CSSProperties, useState } from 'react';
 
 export const App = () => {
-	const [settings, setSettings] = useState(defaultArticleState);
+	const [articleState, setArticleState] = useState(defaultArticleState);
 
 	return (
 		<main
 			className={clsx(styles.main)}
 			style={
 				{
-					'--font-family': settings.fontFamilyOption.value,
-					'--font-size': settings.fontSizeOption.value,
-					'--font-color': settings.fontColor.value,
-					'--container-width': settings.contentWidth.value,
-					'--bg-color': settings.backgroundColor.value,
+					'--font-family': articleState.fontFamilyOption.value,
+					'--font-size': articleState.fontSizeOption.value,
+					'--font-color': articleState.fontColor.value,
+					'--container-width': articleState.contentWidth.value,
+					'--bg-color': articleState.backgroundColor.value,
 				} as CSSProperties
 			}>
 			<ArticleParamsForm
-				settings={settings}
-				updateSettings={(newSettings) => setSettings(newSettings)}
+				articleState={articleState}
+				updateArticleState={(newArticleState) =>
+					setArticleState(newArticleState)
+				}
 			/>
 			<Article />
 		</main>

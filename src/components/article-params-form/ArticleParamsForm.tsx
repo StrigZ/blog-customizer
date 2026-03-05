@@ -22,11 +22,14 @@ import { Text } from 'src/ui/text';
 import { Separator } from 'src/ui/separator';
 
 type Props = {
-	settings: ArticleStateType;
-	updateSettings: (newSettings: ArticleStateType) => void;
+	articleState: ArticleStateType;
+	updateArticleState: (newArticleState: ArticleStateType) => void;
 };
-export const ArticleParamsForm = ({ settings, updateSettings }: Props) => {
-	const [newSettings, setNewSettings] = useState(settings);
+export const ArticleParamsForm = ({
+	articleState,
+	updateArticleState,
+}: Props) => {
+	const [newSettings, setNewSettings] = useState(articleState);
 	const [isOpen, setIsOpen] = useState(false);
 	const asideRef = useRef<HTMLElement>(null);
 	const arrowRef = useRef<HTMLDivElement>(null);
@@ -35,14 +38,14 @@ export const ArticleParamsForm = ({ settings, updateSettings }: Props) => {
 		ref: asideRef,
 		handler: () => {
 			setIsOpen(false);
-			setNewSettings(settings);
+			setNewSettings(articleState);
 		},
 		ignoreRef: arrowRef,
 	});
 
 	const handleArrowClick = () => {
 		setIsOpen((pv) => !pv);
-		setNewSettings(settings);
+		setNewSettings(articleState);
 	};
 
 	const handleFormUpdate = (title: ArticleStateOption, option: OptionType) => {
@@ -52,7 +55,7 @@ export const ArticleParamsForm = ({ settings, updateSettings }: Props) => {
 	const handleFormSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		updateSettings(newSettings);
+		updateArticleState(newSettings);
 		setIsOpen(false);
 	};
 
